@@ -19,7 +19,11 @@ def get_users(db:Session, skip: int = 0, limit: int = 100):
 
 def register(db: Session, user: us.UserCreate):
     hashed_password = pwd_context.hash(user.password)
-    db_user = User(username=user.username, email=user.email, hashed_password=hashed_password)
+    db_user = User(username=user.username, 
+                   email=user.email, 
+                   hashed_password=hashed_password,
+                   balance_dzd=0.0,
+                   balance_eur=0.0)
     try:
         db.add(db_user)
         db.commit()

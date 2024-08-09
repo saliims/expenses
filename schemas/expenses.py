@@ -3,6 +3,7 @@ from pydantic import BaseModel
 class ExpenseBase(BaseModel):
     description: str | None = None
     amount: float
+    currency: str
     type: str
 
 class ExpenseCreate(ExpenseBase):
@@ -18,6 +19,7 @@ class Expense(ExpenseBase):
 class IncomeBase(BaseModel):
     description: str | None = None
     amount: float
+    currency: str
     type: str
 
 class IncomeCreate(IncomeBase):

@@ -9,6 +9,8 @@ class User(Base):
     username = Column(String, unique=True, index=True)
     email = Column(String, unique=True, index=True)
     hashed_password = Column(String)
+    balance_dzd = Column(Float, default=0.0)
+    balance_eur = Column(Float, default=0.0)
 
     expenses = relationship("Expense", back_populates="user")
     incomes = relationship("Income", back_populates="user")
@@ -20,7 +22,8 @@ class Expense(Base):
     id = Column(Integer, primary_key=True)
     description = Column(String)
     amount = Column(Float)
-    type = Column(String)
+    currency = Column(String)
+    type = Column(String, index=True)
     user_id = Column(Integer, ForeignKey('users.id'))
 
     user = relationship("User", back_populates="expenses")
@@ -31,8 +34,9 @@ class Income(Base):
 
     id = Column(Integer, primary_key=True)
     description = Column(String)
-    amount = Float()
-    type = Column(String)
+    amount = Column(Float)
+    currency = Column(String)
+    type = Column(String, index=True)
     user_id = Column(Integer, ForeignKey('users.id'))
 
     user = relationship('User', back_populates="incomes")

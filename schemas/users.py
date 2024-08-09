@@ -12,6 +12,8 @@ class User(UserBase):
     id: int
     expenses: list['Expense'] = []
     incomes: list['Income'] = []
+    balance_dzd: float = 0.0
+    balance_eur: float= 0.0
 
     class Config: 
         orm_mode = True
