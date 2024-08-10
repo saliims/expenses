@@ -1,10 +1,22 @@
 from pydantic import BaseModel
+from enum import Enum
+
+class CurrencyEnum(str, Enum):
+    DZD = "DZD"
+    EUR = "EUR"
+
+class TransactionTypeEnum(str, Enum):
+    Food = "Food"
+    Fun = "Fun"
+    Salary = "Salary"
+    Clothes = "Clothes"
+    Tech = "Tech"
 
 class ExpenseBase(BaseModel):
     description: str | None = None
     amount: float
-    currency: str
-    type: str
+    currency: CurrencyEnum
+    type: TransactionTypeEnum
 
 class ExpenseCreate(ExpenseBase):
     pass
@@ -19,8 +31,8 @@ class Expense(ExpenseBase):
 class IncomeBase(BaseModel):
     description: str | None = None
     amount: float
-    currency: str
-    type: str
+    currency: CurrencyEnum
+    type: TransactionTypeEnum
 
 class IncomeCreate(IncomeBase):
     pass

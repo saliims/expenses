@@ -1,6 +1,14 @@
-from sqlalchemy import Column, ForeignKey, String, Integer, Float
+from sqlalchemy import Column, ForeignKey, String, Integer, Float, Enum
 from sqlalchemy.orm import relationship
 from database import Base
+import enum
+
+class TransactionType(enum.Enum):
+    Food = "Food"
+    Fun = "Fun"
+    Salary = "Salary"
+    Clothes = "Clothes"
+    Tech = "Tech"
 
 class User(Base):
     __tablename__ = "users"
@@ -23,7 +31,7 @@ class Expense(Base):
     description = Column(String)
     amount = Column(Float)
     currency = Column(String)
-    type = Column(String, index=True)
+    type = Column(Enum(TransactionType), index=True)
     user_id = Column(Integer, ForeignKey('users.id'))
 
     user = relationship("User", back_populates="expenses")
@@ -36,7 +44,7 @@ class Income(Base):
     description = Column(String)
     amount = Column(Float)
     currency = Column(String)
-    type = Column(String, index=True)
+    type = Column(Enum(TransactionType), index=True)
     user_id = Column(Integer, ForeignKey('users.id'))
 
     user = relationship('User', back_populates="incomes")
