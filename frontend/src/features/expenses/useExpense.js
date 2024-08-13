@@ -1,9 +1,4 @@
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-  keepPreviousData,
-} from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { API_URL } from "../../utils/constant";
 
@@ -18,7 +13,8 @@ export const useExpenses = (params) => {
   return useQuery({
     queryKey: ["expenses", params],
     queryFn: async () => {
-      const { data } = await apiClient.get(`${API_URL}/expenses`, { params });
+      console.log("Fetching with params:", params);
+      const { data } = await apiClient.get(`/expenses`, { params });
       return data;
     },
     keepPreviousData: true,

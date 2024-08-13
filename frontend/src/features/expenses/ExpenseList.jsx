@@ -1,8 +1,20 @@
 import React from "react";
+import { useSearchParams } from "react-router-dom";
 import { useExpenses } from "./useExpense";
 
 export default function ExpenseList() {
-  const params = { skip: 0, limit: 100 };
+  const [searchParams] = useSearchParams();
+
+  // Convert searchParams to a params object
+  const params = {
+    skip: searchParams.get("skip") || 0,
+    limit: searchParams.get("limit") || 100,
+    type: searchParams.get("type") || "",
+    currency: searchParams.get("currency") || "",
+
+    sort_by_amount: searchParams.get("sort_by_amount") || "asc",
+  };
+
   const { data, error, isLoading } = useExpenses(params);
 
   if (isLoading) return <p>Loading...</p>;

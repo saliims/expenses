@@ -10,6 +10,7 @@ import {
   faPersonWalkingLuggage,
   faRightToBracket,
 } from "@fortawesome/free-solid-svg-icons";
+import { formatCurrencyDZD, formatCurrencyEUR } from "../utils/helpers";
 
 export default function Navbar() {
   const { theme, toggleTheme } = useTheme();
@@ -38,6 +39,21 @@ export default function Navbar() {
         <p className="dark:text-white transition-colors">
           {user && (
             <p className="dark:text-white transition-colors">{user.username}</p>
+          )}
+        </p>
+
+        <p className="dark:text-white transition-colors">
+          {user && (
+            <p className="dark:text-white transition-colors">
+              {formatCurrencyDZD(user.balance_dzd)}
+            </p>
+          )}
+        </p>
+        <p className="dark:text-white transition-colors">
+          {user && (
+            <p className="dark:text-white transition-colors">
+              {formatCurrencyEUR(user.balance_eur)}
+            </p>
           )}
         </p>
         <button
