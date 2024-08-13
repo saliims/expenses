@@ -24,7 +24,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 py-4 px-4 flex justify-between items-center shadow">
+    <nav className="bg-zinc-50 dark:bg-zinc-800 border-b border-gray-200 dark:border-gray-700 py-4 px-4 flex justify-between items-center shadow">
       <div className="font-bold text-2xl text-blue-700 dark:text-blue-400">
         <NavLink
           to="/"

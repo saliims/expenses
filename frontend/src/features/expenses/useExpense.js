@@ -7,30 +7,33 @@ import {
 import axios from "axios";
 import { API_URL } from "../../utils/constant";
 
-export const useExpenses = () => {
-  return useQuery(
-    ["expenses", params],
-    async () => {
-      const { data } = await axios.get(`${API_URL}/expenses`, { params });
+const apiClient = axios.create({
+  baseURL: API_URL,
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem("token")}`,
+  },
+});
+
+export const useExpenses = (params) => {
+  return useQuery({
+    queryKey: ["expenses", params],
+    queryFn: async () => {
+      const { data } = await apiClient.get(`${API_URL}/expenses`, { params });
       return data;
     },
-    {
-      keepPreviousData: true,
-    }
-  );
+    keepPreviousData: true,
+  });
 };
 
-export const useExpense = () => {
-  return useQuery(
-    ["expenses", expenseId],
-    async () => {
-      const { data } = await axios.get(`${API_URL}/expenses/${expenseId}`);
+export const useExpense = (expenseId) => {
+  return useQuery({
+    queryKey: ["expenses", expenseId],
+    queryFn: async () => {
+      const { data } = await apiClient.get(`${API_URL}/expenses/${expenseId}`);
       return data;
     },
-    {
-      enabled: !!expenseId, // run only when expenseId is truthy
-    }
-  );
+    keepPreviousData: true,
+  });
 };
 
 export const useCreateExpense = () => {

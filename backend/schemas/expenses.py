@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from enum import Enum
+from datetime import datetime
 
 class CurrencyEnum(str, Enum):
     DZD = "DZD"
@@ -24,6 +25,8 @@ class ExpenseCreate(ExpenseBase):
 class Expense(ExpenseBase):
     id: int
     user_id: int
+    created_at: datetime
+    updated_at: datetime
 
     class Config:
         orm_mode= True
@@ -40,6 +43,8 @@ class IncomeCreate(IncomeBase):
 class Income(IncomeBase):
     id: int
     user_id: int
+    created_at: datetime
+    updated_at: datetime
 
     class Config:
         orm_mode= True

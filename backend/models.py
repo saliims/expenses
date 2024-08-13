@@ -1,4 +1,4 @@
-from sqlalchemy import Column, ForeignKey, String, Integer, Float, Enum
+from sqlalchemy import Column, ForeignKey, String, Integer, Float, Enum,DateTime,func
 from sqlalchemy.orm import relationship
 from database import Base
 import enum
@@ -19,6 +19,7 @@ class User(Base):
     hashed_password = Column(String)
     balance_dzd = Column(Float, default=0.0)
     balance_eur = Column(Float, default=0.0)
+    
 
     expenses = relationship("Expense", back_populates="user")
     incomes = relationship("Income", back_populates="user")
@@ -33,6 +34,8 @@ class Expense(Base):
     currency = Column(String)
     type = Column(Enum(TransactionType), index=True)
     user_id = Column(Integer, ForeignKey('users.id'))
+    created_at= Column(DateTime, default=func.now(), nullable=False)
+    updated_at=Column(DateTime, default=func.now(), onupdate=func.now(), nullable=False)
 
     user = relationship("User", back_populates="expenses")
 
@@ -46,5 +49,7 @@ class Income(Base):
     currency = Column(String)
     type = Column(Enum(TransactionType), index=True)
     user_id = Column(Integer, ForeignKey('users.id'))
+    created_at= Column(DateTime, default=func.now(), nullable=False)
+    updated_at=Column(DateTime, default=func.now(), onupdate=func.now(), nullable=False)
 
     user = relationship('User', back_populates="incomes")

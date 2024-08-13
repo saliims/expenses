@@ -3,6 +3,7 @@ from sqlalchemy import asc, desc
 from models import Expense
 from schemas import expenses
 from controllers.balance import decrease_balance, update_balance
+from datetime import datetime
 
 def create_expense(db:Session, expense: expenses.ExpenseCreate, user_id: int):
   db_expense = Expense(**expense.model_dump(), user_id=user_id)
@@ -17,11 +18,28 @@ def create_expense(db:Session, expense: expenses.ExpenseCreate, user_id: int):
 
   return db_expense
 
-def get_expenses(db: Session, user_id: int, skip: int = 0, limit: int =100, type: str = None, sort_by_amount: str = None):
+def get_expenses(db: Session, 
+                 user_id: int, 
+                 skip: int = 0, 
+                 limit: int =100, 
+                 type: str = None, 
+                 sort_by_amount: str = None, 
+                 currency: str= None,
+                 start_date: datetime = None,
+                 end_date: datetime = None):
   query = db.query(Expense).filter(Expense.user_id == user_id)
 
   if type:
     query = query.filter(Expense.type == type)
+  
+  if currency: 
+    query = query.filter(Expense.currency == currency)
+
+  if start_date:
+    query = query.filter(Expense.created_at >= start_date)
+
+  if end_date:
+    query = query.filter(Expense.created_at <= end_date)
 
   if sort_by_amount:
     if sort_by_amount.lower() == 'asc':

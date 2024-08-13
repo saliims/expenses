@@ -1,5 +1,10 @@
 import React from "react";
+import ExpenseList from "../features/expenses/ExpenseList";
 
 export default function Expense() {
-  return <div>Expense</div>;
+  return (
+    <div>
+      <ExpenseList />
+    </div>
+  );
 }
