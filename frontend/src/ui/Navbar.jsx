@@ -1,13 +1,19 @@
+import React from "react";
+import { NavLink } from "react-router-dom";
 import { faMoon, faSun, faUser } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
-import { NavLink, useNavigate } from "react-router-dom";
 import { useTheme } from "../context/ThemeContext";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../features/auth/authReducer";
+import { useNavigate } from "react-router-dom";
+import {
+  faPersonWalkingLuggage,
+  faRightToBracket,
+} from "@fortawesome/free-solid-svg-icons";
 
 export default function Navbar() {
   const { theme, toggleTheme } = useTheme();
+  const user = useSelector((state) => state.auth.user);
   const isDark = theme === "dark";
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -18,60 +24,48 @@ export default function Navbar() {
   };
 
   return (
-    <div className="flex py-2 px-4 items-center justify-between ">
-      <div className="font-bold text-2xl text-violet-700 hover:text-violet-900 ease-in duration-300 dark:text-violet-400 hover:dark:text-violet-500">
-        <NavLink to="/">iExpense</NavLink>
+    <nav className="bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 py-4 px-4 flex justify-between items-center shadow">
+      <div className="font-bold text-2xl text-blue-700 dark:text-blue-400">
+        <NavLink
+          to="/"
+          className="hover:text-blue-900 dark:hover:text-blue-500"
+        >
+          iExpense
+        </NavLink>
       </div>
-      <div>
-        <ul className="flex gap-20  text-perso-blue text-lg font-semibold ">
-          <NavLink
-            to="/"
-            className="text-violet-700 hover:text-violet-900 dark:text-violet-400 hover:dark:text-violet-500 ease-in duration-300"
-          >
-            Home
-          </NavLink>
-          <NavLink
-            to="/expenses"
-            className="text-violet-700 hover:text-violet-900 dark:text-violet-400 hover:dark:text-violet-500 ease-in duration-300"
-          >
-            Expenses
-          </NavLink>
-          <NavLink
-            to="/incomes"
-            className="text-violet-700 hover:text-violet-900 dark:text-violet-400 hover:dark:text-violet-500 ease-in duration-300"
-          >
-            Incomes
-          </NavLink>
-        </ul>
-      </div>
-      <div className="flex gap-2">
+
+      <div className="flex items-center gap-2">
+        <p className="dark:text-white transition-colors">
+          {user && (
+            <p className="dark:text-white transition-colors">{user.username}</p>
+          )}
+        </p>
+        <button
+          className="flex items-center gap-1 text-blue-700 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-500"
+          onClick={handleLogout}
+        >
+          <FontAwesomeIcon icon={faRightToBracket} className="text-2xl" />
+        </button>
         <button
           type="button"
           onClick={toggleTheme}
-          className="text-violet-700 hover:text-violet-900 dark:text-violet-400 hover:dark:text-violet-500 ease-in duration-300"
+          className="text-blue-700 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-500"
         >
           {isDark ? (
             <FontAwesomeIcon
               icon={faSun}
               aria-hidden="true"
-              className="text-xl"
+              className="text-2xl"
             />
           ) : (
             <FontAwesomeIcon
               icon={faMoon}
               aria-hidden="true"
-              className="text-xl"
+              className="text-2xl"
             />
           )}
         </button>
-        <button
-          className="flex items-center justify-center gap-1 text-violet-700 hover:text-violet-900 dark:text-violet-400 hover:dark:text-violet-500 ease-in duration-300s"
-          onClick={handleLogout}
-        >
-          <FontAwesomeIcon icon={faUser} className="text-xl" />
-          <p>Logout</p>
-        </button>
       </div>
-    </div>
+    </nav>
   );
 }

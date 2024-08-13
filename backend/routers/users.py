@@ -47,7 +47,13 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = 
   if not user: 
     raise HTTPException(status_code=400, detail='Incorrect credentials')
   access_token = create_access_token(data={"sub": user.username})
-  return {"access_token": access_token, "token_type": "bearer"}
+
+  user_data = users.UserInResponse(
+    id=user.id,
+    username=user.username,
+    email=user.email
+  )
+  return {"access_token": access_token, "token_type": "bearer", "user":user_data.model_dump()}
 
 @router.post('/register', response_model=users.User)
 def signup(user: users.UserCreate, db: Session = Depends(get_db)):

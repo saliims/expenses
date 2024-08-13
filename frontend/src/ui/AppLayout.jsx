@@ -1,12 +1,18 @@
 import { Outlet } from "react-router-dom";
 import React from "react";
 import Navbar from "./Navbar";
+import Sidebar from "./Sidebar";
 
 export default function AppLayout() {
   return (
-    <div className="bg-neutral-300 text-neutral-900 dark:bg-neutral-900 dark:text-neutral-100 h-screen transition-colors">
+    <div className="flex flex-col h-screen">
       <Navbar />
-      <Outlet />
+      <div className="flex flex-col md:flex-row flex-grow">
+        <Sidebar />
+        <div className="flex-grow overflow-y-auto p-4 dark:bg-gray-700 dark:text-white transition-colors">
+          <Outlet />
+        </div>
+      </div>
     </div>
   );
 }
