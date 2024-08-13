@@ -11,9 +11,20 @@ export default function ExpenseList() {
     limit: searchParams.get("limit") || 100,
     type: searchParams.get("type") || "",
     currency: searchParams.get("currency") || "",
-
-    sort_by_amount: searchParams.get("sort_by_amount") || "asc",
+    sort_by_amount: searchParams.get("amount") || "asc",
   };
+
+  // Conditionally add start_date and end_date only if they are not empty
+  const startDate = searchParams.get("start_date");
+  const endDate = searchParams.get("end_date");
+
+  if (startDate) {
+    params.start_date = startDate;
+  }
+
+  if (endDate) {
+    params.end_date = endDate;
+  }
 
   const { data, error, isLoading } = useExpenses(params);
 

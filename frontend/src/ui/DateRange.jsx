@@ -1,34 +1,55 @@
+import React from "react";
 import { useSearchParams } from "react-router-dom";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { format, parse } from "date-fns";
+import { enGB } from "date-fns/locale"; // Import locale
 
-const DateRangeFilter = () => {
+export default function DateRangeFilter() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const startDate = searchParams.get("startDate") || "";
-  const endDate = searchParams.get("endDate") || "";
+  const startDate = searchParams.get("start_date")
+    ? new Date(searchParams.get("start_date"))
+    : null;
+  const endDate = searchParams.get("end_date")
+    ? new Date(searchParams.get("end_date"))
+    : null;
 
-  const handleChange = (e) => {
-    searchParams.set(e.target.name, e.target.value);
+  function handleStartDateChange(date) {
+    if (date) {
+      searchParams.set("start_date", format(date, "yyyy-MM-dd"));
+    } else {
+      searchParams.delete("start_date");
+    }
     setSearchParams(searchParams);
-  };
+  }
+
+  function handleEndDateChange(date) {
+    if (date) {
+      searchParams.set("end_date", format(date, "yyyy-MM-dd"));
+    } else {
+      searchParams.delete("end_date");
+    }
+    setSearchParams(searchParams);
+  }
 
   return (
-    <div className="flex gap-2 items-center">
-      <input
-        type="date"
-        name="startDate"
-        value={startDate}
-        onChange={handleChange}
-        className="border border-gray-300 rounded-md p-1"
+    <div className="flex gap-2">
+      <DatePicker
+        selected={startDate}
+        onChange={handleStartDateChange}
+        dateFormat="dd/MM/yyyy" // European format
+        placeholderText="Start Date"
+        className="border rounded px-2 py-1"
+        locale={enGB} // Set locale for European formatting
       />
-      <span className="text-gray-500">to</span>
-      <input
-        type="date"
-        name="endDate"
-        value={endDate}
-        onChange={handleChange}
-        className="border border-gray-300 rounded-md p-1"
+      <DatePicker
+        selected={endDate}
+        onChange={handleEndDateChange}
+        dateFormat="dd/MM/yyyy" // European format
+        placeholderText="End Date"
+        className="border rounded px-2 py-1"
+        locale={enGB} // Set locale for European formatting
       />
     </div>
   );
-};
-
-export default DateRangeFilter;
+}

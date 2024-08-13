@@ -27,13 +27,14 @@ export default function ExpenseTableOperations() {
         ]}
         type="select"
       />
-      <DateRangeFilter />
-      <SortBy
+      <Filter
+        filterField="amount"
         options={[
-          { value: "amount-asc", label: "Sort by amount (low first)" },
-          { value: "amount-desc", label: "Sort by amount (high first)" },
+          { value: "asc", label: "ASC" },
+          { value: "desc", label: "DESC" },
         ]}
       />
+      <DateRangeFilter />
     </div>
   );
 }
