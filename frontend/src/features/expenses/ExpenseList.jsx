@@ -4,8 +4,9 @@ import { useExpenses } from "./useExpense";
 
 export default function ExpenseList() {
   const [searchParams] = useSearchParams();
+  const currentPage = 1;
+  const totalPages = 10;
 
-  // Convert searchParams to a params object
   const params = {
     skip: searchParams.get("skip") || 0,
     limit: searchParams.get("limit") || 100,
@@ -14,7 +15,6 @@ export default function ExpenseList() {
     sort_by_amount: searchParams.get("amount") || "asc",
   };
 
-  // Conditionally add start_date and end_date only if they are not empty
   const startDate = searchParams.get("start_date");
   const endDate = searchParams.get("end_date");
 
