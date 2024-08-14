@@ -7,6 +7,7 @@ from controllers import incomes as income_controller
 from database import get_db
 from fastapi.security import OAuth2PasswordBearer
 from .users import get_current_user
+from datetime import datetime
 
 router = APIRouter()
 
@@ -18,6 +19,9 @@ async def read_incomes(
   limit: int = 100,
   type: Optional[str] = None,
   sort_by_amount: Optional[str] = Query(None, regex="^(asc|desc)$"),
+  currency: Optional[str] = None,
+  start_date: Optional[datetime] = None,
+  end_date: Optional[datetime] = None,
   db: Session = Depends(get_db),
   current_user: User = Depends(get_current_user)
 ):
@@ -26,7 +30,10 @@ async def read_incomes(
     user_id=current_user.id, 
     skip=skip, limit=limit, 
     type=type, 
-    sort_by_amount=sort_by_amount)
+    sort_by_amount=sort_by_amount,
+    currency=currency,
+    start_date=start_date,
+    end_date=end_date)
 
 @router.get('/{income_id}', response_model=income_schemas.Income)
 async def read_income(

@@ -3,6 +3,7 @@ from sqlalchemy import asc, desc
 from models import Income
 from schemas import expenses
 from controllers.balance import update_balance, decrease_balance
+from datetime import datetime
 
 def create_income(db: Session, income: expenses.IncomeCreate, user_id:int):
   db_income= Income(**income.model_dump(), user_id=user_id)
@@ -17,11 +18,28 @@ def create_income(db: Session, income: expenses.IncomeCreate, user_id:int):
 
   return db_income
 
-def get_incomes(db:Session, user_id: int, skip: int = 0, limit: int =100, type:str = None, sort_by_amount: str = None):
+def get_incomes(db:Session, 
+                user_id: int, 
+                skip: int = 0, 
+                limit: int =100, 
+                type:str = None, 
+                sort_by_amount: str = None,
+                currency: str= None,
+                start_date: datetime = None,
+                end_date: datetime = None):
   query = db.query(Income).filter(Income.user_id == user_id)
 
   if type: 
     query = query.filter(Income.type == type)
+
+  if currency: 
+    query = query.filter(Income.currency == currency)
+
+  if start_date:
+    query = query.filter(Income.created_at >= start_date)
+
+  if end_date:
+    query = query.filter(Income.created_at <= end_date)
 
   if sort_by_amount:
     if sort_by_amount.lower() =='asc':
