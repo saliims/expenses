@@ -29,6 +29,30 @@ export const login = createAsyncThunk(
   }
 );
 
+export const register = createAsyncThunk(
+  "auth/register",
+  async ({ username, email, password }, { rejectWithValue }) => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const data = { username, email, password };
+      const response = await axios.post(
+        `${API_URL}/users/register`,
+        data,
+        config
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.detail || "Registration failed"
+      );
+    }
+  }
+);
+
 export const logout = createAsyncThunk("/logout", async () => {
   localStorage.removeItem("token");
 });
@@ -58,6 +82,17 @@ const authSlice = createSlice({
     builder.addCase(logout.fulfilled, (state) => {
       state.user = null;
       state.token = null;
+    });
+    builder.addCase(register.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    });
+    builder.addCase(register.fulfilled, (state) => {
+      state.isLoading = false;
+    });
+    builder.addCase(register.rejected, (state) => {
+      state.isLoading = false;
+      state.error = action.payload;
     });
   },
 });

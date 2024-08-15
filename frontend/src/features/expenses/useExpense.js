@@ -13,7 +13,6 @@ export const useExpenses = (params) => {
   return useQuery({
     queryKey: ["expenses", params],
     queryFn: async () => {
-      console.log("Fetching with params:", params);
       const { data } = await apiClient.get(`/expenses`, { params });
       return data;
     },
