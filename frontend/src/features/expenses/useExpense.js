@@ -33,17 +33,18 @@ export const useExpense = (expenseId) => {
 
 export const useCreateExpense = () => {
   const queryClient = useQueryClient();
-  return useMutation(
-    async (newExpense) => {
+  return useMutation({
+    mutationFn: async (newExpense) => {
       const { data } = await axios.post(`${API_URL}/expenses`, newExpense);
       return data;
     },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries("expenses");
-      },
-    }
-  );
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["expenses"] });
+    },
+    onError: (err) => {
+      alert(err.message);
+    },
+  });
 };
 
 export const useUpdateExpense = () => {
