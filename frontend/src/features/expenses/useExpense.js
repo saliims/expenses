@@ -67,7 +67,7 @@ export const useDeleteExpense = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (expenseId) => {
-      const { data } = await axios.put(`${API_URL}/expenses/${expenseId}`);
+      const { data } = await axios.delete(`${API_URL}/expenses/${expenseId}`);
       return data;
     },
     onSuccess: () => {

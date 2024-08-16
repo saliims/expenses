@@ -1,62 +1,76 @@
 import { useForm } from "react-hook-form";
-import { useCreateExpense } from "./useExpense";
+import { useCreateExpense, useUpdateExpense } from "./useExpense";
+import { useEffect } from "react";
 
-const currencyOptions = [
-  { value: "DZD", label: "DZD" },
-  { value: "EUR", label: "EUR" },
-];
-
-const typeOptions = [
-  { value: "Food", label: "Food" },
-  { value: "Fun", label: "Fun" },
-  { value: "Salary", label: "Salary" },
-  { value: "Clothes", label: "Clothes" },
-  { value: "Tech", label: "Tech" },
-];
-
-const AddExpenseForm = ({ onClose, isOpen }) => {
+const AddExpenseForm = ({ onClose, isOpen, initialValues = {} }) => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: initialValues,
+  });
+
   const { mutate: addExpense } = useCreateExpense();
+  const { mutate: updateExpense } = useUpdateExpense();
+
+  const currencyOptions = [
+    { value: "DZD", label: "DZD" },
+    { value: "EUR", label: "EUR" },
+  ];
+
+  const typeOptions = [
+    { value: "Food", label: "Food" },
+    { value: "Fun", label: "Fun" },
+    { value: "Salary", label: "Salary" },
+    { value: "Clothes", label: "Clothes" },
+    { value: "Tech", label: "Tech" },
+  ];
+
+  useEffect(() => {
+    if (initialValues) {
+      setValue("description", initialValues.description || "");
+      setValue("amount", initialValues.amount || "");
+      setValue("currency", initialValues.currency || "DZD");
+      setValue("type", initialValues.type || "");
+    }
+  }, [initialValues, setValue]);
 
   const onSubmit = (data) => {
-    addExpense(data);
+    if (initialValues.id) {
+      updateExpense({ expenseId: initialValues.id, updatedExpense: data });
+    } else {
+      addExpense(data);
+    }
     onClose();
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 dark:bg-gray-900 dark:bg-opacity-70 ">
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 dark:bg-gray-900 dark:bg-opacity-70">
       <div className="bg-zinc-50 dark:bg-zinc-800 p-6 rounded shadow-lg w-full max-w-md">
         <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-gray-100">
-          Add Expense
+          {initialValues.id ? "Update Expense" : "Add Expense"}
         </h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">
-            <label
-              htmlFor="description"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-            >
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
               Description
             </label>
             <input
-              id="description"
               {...register("description", {
                 required: "Description is required",
               })}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 bg-zinc-50 dark:bg-zinc-800 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-gray-900 dark:text-gray-100"
+              className="mt-1 block w-full p-2 border  border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 bg-zinc-50 dark:bg-zinc-800 dark:text-gray-300"
             />
             {errors.description && (
-              <p className="text-red-500 text-xs">
+              <p className="text-red-500 text-sm mt-1">
                 {errors.description.message}
               </p>
             )}
           </div>
-
           <div className="mb-4">
             <label
               htmlFor="amount"
@@ -122,7 +136,7 @@ const AddExpenseForm = ({ onClose, isOpen }) => {
             )}
           </div>
 
-          <div className="flex justify-end">
+          <div className="mt-6 flex justify-end">
             <button
               type="button"
               onClick={onClose}
@@ -132,9 +146,9 @@ const AddExpenseForm = ({ onClose, isOpen }) => {
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-blue-600 dark:bg-blue-700 text-white rounded-md hover:bg-blue-800 dark:hover:bg-blue-800"
+              className="px-4 py-2 bg-indigo-600 dark:bg-indigo-700 text-white rounded-md hover:bg-indigo-800 dark:hover:bg-indigo-800"
             >
-              Add Expense
+              {initialValues.id ? "Update" : "Add"}
             </button>
           </div>
         </form>

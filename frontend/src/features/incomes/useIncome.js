@@ -68,7 +68,7 @@ export const useUpdateIncome = () => {
   });
 };
 
-export const useDeleteExpenseIncome = () => {
+export const useDeleteIncome = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (incomeId) => {
