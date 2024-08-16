@@ -111,13 +111,13 @@ export default function ExpenseList() {
                     leaveTo="transform opacity-0 scale-95"
                   >
                     <MenuItems
-                      className={`z-10 absolute ${
-                        index === data.length - 1
+                      className={`z-10 absolute right-0 w-56 rounded-md shadow-lg bg-zinc-50 dark:bg-zinc-800 ring-1 ring-black ring-opacity-5 focus:outline-none ${
+                        index >= data.length - 2
                           ? "bottom-full mb-2"
                           : "top-full mt-2"
-                      } right-0 w-56 rounded-md shadow-lg bg-zinc-50 dark:bg-zinc-800 ring-1 ring-black ring-opacity-5 focus:outline-none`}
+                      }`}
                     >
-                      <MenuItems>
+                      <MenuItem>
                         {({ active }) => (
                           <button
                             onClick={() => handleEdit(expense)}
@@ -130,7 +130,7 @@ export default function ExpenseList() {
                             Edit
                           </button>
                         )}
-                      </MenuItems>
+                      </MenuItem>
                       <MenuItem>
                         {({ active }) => (
                           <button

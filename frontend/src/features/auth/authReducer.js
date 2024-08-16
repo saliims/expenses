@@ -2,12 +2,15 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { API_URL } from "../../utils/constant";
 import qs from "qs";
+import { queryClient } from "../../App";
 
 const initialState = {
   user: null,
   token: localStorage.getItem("token"),
   isLoading: false,
   error: null,
+  expenses: [],
+  incomes: [],
 };
 
 export const login = createAsyncThunk(
@@ -44,6 +47,8 @@ export const register = createAsyncThunk(
         data,
         config
       );
+
+      queryClient.invalidateQueries({ queryKey: ["expenses"] });
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -74,6 +79,8 @@ const authSlice = createSlice({
       state.isLoading = false;
       state.user = action.payload.user;
       state.token = action.payload.access_token;
+      state.expenses = action.payload.user.expenses || [];
+      state.incomes = action.payload.user.incomes || [];
     });
     builder.addCase(login.rejected, (state, action) => {
       state.isLoading = false;

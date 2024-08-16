@@ -13,8 +13,13 @@ export const useExpenses = (params) => {
   return useQuery({
     queryKey: ["expenses", params],
     queryFn: async () => {
-      const { data } = await apiClient.get(`/expenses`, { params });
-      return data;
+      try {
+        const { data } = await apiClient.get(`/expenses`, { params });
+        return data;
+      } catch (error) {
+        console.error("Error fetching expenses:", error);
+        throw error;
+      }
     },
     keepPreviousData: true,
   });

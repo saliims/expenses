@@ -1,8 +1,10 @@
 from sqlalchemy.orm import Session
 from passlib.context import CryptContext
 from sqlalchemy.exc import IntegrityError
-from models import User
+from models import User, Expense, Income
 from schemas import users as us
+from schemas.expenses import Expense as ExpenseSchema, Income as IncomeSchema
+
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -44,5 +46,9 @@ def login(db: Session, username_or_email: str, password: str):
         return False
     if not pwd_context.verify(password, user.hashed_password):
         return False
-    return user
     
+    expenses = db.query(Expense).filter(Expense.user_id == user.id).all()
+    incomes = db.query(Income).filter(Income.user_id == user.id).all()
+    
+    
+    return user

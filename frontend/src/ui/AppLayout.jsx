@@ -7,10 +7,9 @@ export default function AppLayout() {
   return (
     <div className="flex flex-col h-screen">
       <Navbar />
-      <div className="flex flex-col md:flex-row flex-grow">
+      <div className="flex flex-col md:flex-row flex-grow relative">
         <Sidebar />
-        <div className="flex-grow overflow-y-auto p-4 bg-zinc-100 dark:bg-zinc-950 dark:text-white transition-colors">
-          {" "}
+        <div className="flex-grow overflow-y-auto p-4 pb-20 md:pb-4 bg-zinc-100 dark:bg-zinc-950 dark:text-white transition-colors">
           <Outlet />
         </div>
       </div>

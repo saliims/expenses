@@ -43,17 +43,22 @@ def get_current_user(token: str = Depends(oauth2_scheme), db:Session = Depends(g
 
 @router.post('/login')
 async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
-  user = us.login(db, form_data.username, form_data.password)
-  if not user: 
-    raise HTTPException(status_code=400, detail='Incorrect credentials')
-  access_token = create_access_token(data={"sub": user.username})
+    result = us.login(db, form_data.username, form_data.password)
+    if not result: 
+        raise HTTPException(status_code=400, detail='Incorrect credentials')
+    
+    user = result
+    access_token = create_access_token(data={"sub": user.username})
 
-  user_data = users.UserInResponse(
-    id=user.id,
-    username=user.username,
-    email=user.email
-  )
-  return {"access_token": access_token, "token_type": "bearer", "user":user_data.model_dump()}
+    user_data = users.UserInResponse(
+        id=user.id,
+        username=user.username,
+        email=user.email,
+        balance_dzd=user.balance_dzd,
+        balance_eur=user.balance_eur,
+
+    )
+    return {"access_token": access_token, "token_type": "bearer", "user": user_data.model_dump()}
 
 @router.post('/register', response_model=users.User)
 def signup(user: users.UserCreate, db: Session = Depends(get_db)):

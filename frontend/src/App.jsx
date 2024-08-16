@@ -11,9 +11,11 @@ import ProtectedRoute from "./ui/ProtectedRoute";
 import PublicRoute from "./ui/PublicRoute";
 import { ThemeProvider } from "./context/ThemeContext";
 
-const queryClient = new QueryClient({
+export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
+      refetchOnWindowFocus: false,
+      retry: false,
       staleTime: 0,
     },
   },

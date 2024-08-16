@@ -25,3 +25,6 @@ class UserInResponse(BaseModel):
     id: int
     username: str
     email: str
+    balance_dzd: float
+    balance_eur: float
+   

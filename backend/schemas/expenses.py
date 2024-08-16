@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from enum import Enum
 from datetime import datetime
 
@@ -18,6 +18,7 @@ class ExpenseBase(BaseModel):
     amount: float
     currency: CurrencyEnum
     type: TransactionTypeEnum
+    
 
 class ExpenseCreate(ExpenseBase):
     pass
@@ -28,8 +29,8 @@ class Expense(ExpenseBase):
     created_at: datetime
     updated_at: datetime
 
-    class Config:
-        orm_mode= True
+    model_config = ConfigDict(from_attributes=True)
+
 
 class IncomeBase(BaseModel):
     description: str | None = None
@@ -46,5 +47,4 @@ class Income(IncomeBase):
     created_at: datetime
     updated_at: datetime
 
-    class Config:
-        orm_mode= True
+    model_config = ConfigDict(from_attributes=True)
