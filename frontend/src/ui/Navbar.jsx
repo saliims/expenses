@@ -32,7 +32,7 @@ export default function Navbar() {
           to="/"
           className="hover:text-blue-900 dark:hover:text-blue-500"
         >
-          iExpense
+          JibTracker
         </NavLink>
       </div>
 

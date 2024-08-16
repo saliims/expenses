@@ -14,7 +14,7 @@ export default function Login() {
   };
 
   return (
-    <div className="h-screen bg-violet-300 flex flex-col items-center justify-center">
+    <div className="h-screen bg-zinc-200 dark:bg-zinc-800 flex flex-col items-center justify-center">
       <div className="flex flex-col items-center">
         {isLogin ? (
           <LoginForm />
@@ -23,7 +23,7 @@ export default function Login() {
         )}
         <button
           onClick={toggleForm}
-          className="mt-4 text-violet-700 hover:underline"
+          className="mt-4 text-blue-700 hover:underline"
         >
           {isLogin
             ? "Don't have an account? Sign up now!"
