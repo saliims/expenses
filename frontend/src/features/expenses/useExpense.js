@@ -49,33 +49,29 @@ export const useCreateExpense = () => {
 
 export const useUpdateExpense = () => {
   const queryClient = useQueryClient();
-  return useMutation(
-    async ({ expenseId, updatedExpense }) => {
+  return useMutation({
+    mutationFn: async ({ expenseId, updatedExpense }) => {
       const { data } = await axios.put(
         `${API_URL}/expenses/${expenseId}`,
         updatedExpense
       );
       return data;
     },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries("expenses");
-      },
-    }
-  );
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["expenses"] });
+    },
+  });
 };
 
 export const useDeleteExpense = () => {
   const queryClient = useQueryClient();
-  return useMutation(
-    async (expenseId) => {
-      const { data } = await axios.delete(`${API_URL}/expenses/${expenseId}`);
+  return useMutation({
+    mutationFn: async (expenseId) => {
+      const { data } = await axios.put(`${API_URL}/expenses/${expenseId}`);
       return data;
     },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries("expenses");
-      },
-    }
-  );
+    onSuccess: () => {
+      queryClient.invalidateQueries("expenses");
+    },
+  });
 };
